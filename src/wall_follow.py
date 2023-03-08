@@ -515,6 +515,8 @@ class WallFollower():
 			state = self.get_state()
 			self.take_step(state)
 
+		rospy.on_shutdown(self.stop)
+
 	def learn_mode(self, file, folder):
 		print("Starting Learning Mode")
 
@@ -573,6 +575,9 @@ class WallFollower():
 			self.robot_position = (trans, rot)
 		except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException):
 			pass
+
+	def stop(self):
+		self.move_publisher.publish(Twist())
 
 	# get_state
 	# uses the current scan to determine the state
